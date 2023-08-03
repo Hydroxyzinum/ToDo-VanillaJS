@@ -45,38 +45,8 @@ loadTask();
 // Инициализация отображения текущей даты и времени на странице
 initTime();
 
-// Функция для обработки события клика на кнопку выхода из аккаунта
-const exit = () => {
-  document
-    .querySelector('[data-target="exit"]')
-    .addEventListener("click", () => {
-      // При клике показываем контейнер для подтверждения выхода
-      document.querySelector(".close-container").style.display = "block";
-
-      // Обработчик для кнопки "Да"
-      document
-        .querySelector('[data-target="yes"]')
-        .addEventListener("click", () => {
-          // При подтверждении выхода перенаправляем пользователя на страницу "auto.html"
-          document.location.href = "auto.html";
-        });
-
-      // Обработчик для кнопки "Нет"
-      document
-        .querySelector('[data-target="no"]')
-        .addEventListener("click", () => {
-          // При отмене выхода скрываем контейнер для подтверждения выхода
-          document.querySelector(".close-container").style.display = "none";
-        });
-    });
-};
-
-// Вызываем функцию для обработки события клика на кнопку выхода из аккаунта
-exit();
-
 // Функция для загрузки данных из localStorage
-
-const loadData = () => {
+function loadData() {
   // Проверяем, есть ли сохраненные задачи в localStorage
   if (JSON.parse(localStorage.getItem("tasks")) === null) {
     // Если нет, сохраняем пустой массив в localStorage и присваиваем его переменной taskArray
@@ -96,21 +66,19 @@ const loadData = () => {
     // Если есть, загружаем статистические данные из localStorage в переменную statsData
     statsData = JSON.parse(localStorage.getItem("stats"));
   }
-};
+}
 
 // Функция для сохранения данных в localStorage
-
-const saveData = () => {
+function saveData() {
   // Сохраняем текущий массив задач и статистические данные в localStorage
   localStorage.setItem("tasks", JSON.stringify(taskArray));
   localStorage.setItem("stats", JSON.stringify(statsData));
   // Загружаем статистические данные на страницу
   loadStats();
-};
+}
 
 // Функция для загрузки задач на страницу
-
-const loadTask = () => {
+function loadTask() {
   // Удаляем все существующие карточки задач
   const updatedtaskCard = document.querySelectorAll(".task-card");
   updatedtaskCard.forEach((updatedtaskCard) => {
@@ -133,7 +101,7 @@ const loadTask = () => {
 
       const tab = document.createElement("div");
       tab.classList = "task-card";
-      tab.onclick = () => {
+      tab.onclick = function () {
         opentaskView(
           currcontent.title,
           currcontent.desc,
@@ -182,10 +150,9 @@ const loadTask = () => {
       }
     }
   }
-};
+}
 // Функция для изменения текущего месяца в зависимости от значения 'val'
-
-const changeMonth = (val) => {
+function changeMonth(val) {
   if (val == 0) {
     // Если 'val' равен 0, увеличиваем текущий месяц на 1
     if (cmonth < 11) {
@@ -212,11 +179,10 @@ const changeMonth = (val) => {
   document.querySelector(".date button").click();
   // Сбрасываем горизонтальную прокрутку в контейнере даты до начального положения
   document.querySelector(".date").scrollLeft = 0;
-};
+}
 
 // Функция для инициализации отображения текущей даты и времени на странице
-
-const initTime = () => {
+function initTime() {
   // Массивы с названиями месяцев и дней недели на разных языках
   const months = [
     "Январь 🌨️",
@@ -259,7 +225,6 @@ const initTime = () => {
 
   // Получаем название текущего месяца и дня недели, а также номер текущего дня
   let month = months[cmonth];
-  let day = days[now.getDay()];
   let numday = now.getDate();
 
   // Получаем общее количество дней в текущем месяце
@@ -288,7 +253,7 @@ const initTime = () => {
     tbox.appendChild(tday);
 
     tbox.id = now.getFullYear() + "" + (cmonth + 1) + "" + i;
-    tbox.onclick = () => {
+    tbox.onclick = function () {
       currid = tbox.id;
       deactiveBtn(tbox);
       loadTask();
@@ -309,17 +274,16 @@ const initTime = () => {
   document.querySelector(".topdate-holder h2").innerHTML = month;
   document.querySelector(".topdate-holder h4").innerHTML = cyear;
   document.querySelector(".topdate-holder h2").value = monthsEng;
-};
+}
 
 // Функция для отключения активных кнопок даты и активации переданной кнопки 'val'
-
-const deactiveBtn = (val) => {
+function deactiveBtn(val) {
   let allBtn = document.querySelectorAll(".date button");
   allBtn.forEach((fbtn) => {
     fbtn.classList = "dateBtn";
   });
   val.classList = "dateBtnActive";
-};
+}
 
 // Получение текущей даты и времени
 const currentDate = new Date();
@@ -348,14 +312,12 @@ const teDisplayer = document.querySelector(
 );
 
 // Функция для открытия всплывающего окна добавления задачи
-
-const opentaskPopup = () => {
+function opentaskPopup() {
   addTaskPopup.style.display = "flex";
-};
+}
 
 // Функция для закрытия всплывающего окна добавления задачи и сброса значений полей
-
-const closetaskPopup = () => {
+function closetaskPopup() {
   addTaskPopup.style.display = "none";
   document.querySelector(".category").style.display = "none";
   [title.value, desc.value, category, timeStart.value, timeEnd.value] = [
@@ -370,11 +332,10 @@ const closetaskPopup = () => {
     timeStart.value,
     timeEnd.value,
   ];
-};
+}
 
 // Функция для открытия окна просмотра задачи с переданными данными
-
-const opentaskView = (t, d, ts, te, c, u, ic) => {
+function opentaskView(t, d, ts, te, c, u, ic) {
   taskView.style.display = "flex";
 
   let title = taskView.querySelector(".task-form-view h1");
@@ -400,49 +361,45 @@ const opentaskView = (t, d, ts, te, c, u, ic) => {
   tsDisplay.innerHTML = ts;
   teDisplay.innerHTML = te;
   cateDisplay.innerHTML = c;
-  del.onclick = () => {
+  del.onclick = function () {
     deleteTask(u);
   };
 
   if (ic == "false") {
     cmplt.style.display = "block";
-    cmplt.onclick = () => {
+    cmplt.onclick = function () {
       completeTask(u);
     };
   } else {
     cmplt.style.display = "none";
   }
-};
+}
 
 // Функция для закрытия окна просмотра задачи
-
-const closetaskView = () => {
+function closetaskView() {
   taskView.style.display = "none";
-};
+}
 
 // Функция для открытия всплывающего окна выбора категории
-
-const openCategory = () => {
+function openCategory() {
   catePopup.style.display = "flex";
   // Добавляем обработчик события для каждой кнопки в окне выбора категории
   document.querySelectorAll(".category button").forEach((button) => {
-    button.addEventListener("click", () => {
+    button.addEventListener("click", function () {
       category = button.innerHTML; // Обновляем выбранную категорию
       cateDisplayer.innerHTML = button.innerHTML; // Обновляем отображение выбранной категории
       closeCategory();
     });
   });
-};
+}
 
 // Функция для закрытия всплывающего окна выбора категории
-
-const closeCategory = () => {
+function closeCategory() {
   catePopup.style.display = "none";
-};
+}
 
 // Функция для добавления задачи при нажатии кнопки "Добавить задачу"
-
-const addtaskBtn = () => {
+function addtaskBtn() {
   if (timeStart.value < currentTime) {
     alert("Вы добавляете задачу в прошедшем времени");
   }
@@ -457,21 +414,20 @@ const addtaskBtn = () => {
     category,
     timeStartEnd
   );
-};
+}
 
 // Обновление отображения времени при изменении времени начала
-timeStart.oninput = () => {
+timeStart.oninput = function () {
   tsDisplayer.innerHTML = timeStart.value;
 };
 
 // Обновление отображения времени при изменении времени окончания
-timeEnd.oninput = () => {
+timeEnd.oninput = function () {
   teDisplayer.innerHTML = timeEnd.value;
 };
 
 // Функция для добавления задачи в массив и сохранения данных
-
-const addtask = (t, d, ts, te, c, tse) => {
+function addtask(t, d, ts, te, c, tse) {
   let uniqueid = Math.random() * 100;
 
   statsData.aktif++; // Увеличиваем счетчик активных задач
@@ -519,11 +475,10 @@ const addtask = (t, d, ts, te, c, tse) => {
     closetaskPopup(); // Закрываем всплывающее окно добавления задачи
     saveData(); // Сохраняем измененные данные в localStorage
   }
-};
+}
 
 // Функция для удаления задачи по ее уникальному идентификатору (uid)
-
-const deleteTask = (val) => {
+function deleteTask(val) {
   if (taskArray.find((tanggal) => tanggal.date === currid)) {
     // Если для текущей даты есть задачи в массиве
     let getTask = taskArray.find((tanggal) => tanggal.date === currid);
@@ -558,11 +513,10 @@ const deleteTask = (val) => {
     loadTask(); // Загружаем задачи для текущей даты
     closetaskView(); // Закрываем окно просмотра задачи
   }
-};
+}
 
 // Функция для завершения задачи по ее уникальному идентификатору (uid)
-
-const completeTask = (val) => {
+function completeTask(val) {
   if (statsData.aktif > 0) {
     statsData.komplit++; // Увеличиваем счетчик выполненных задач
     statsData.aktif--; // Уменьшаем счетчик активных задач
@@ -579,11 +533,10 @@ const completeTask = (val) => {
   saveData(); // Сохраняем измененные данные в localStorage
   loadTask(); // Загружаем задачи для текущей даты
   closetaskView(); // Закрываем окно просмотра задачи
-};
+}
 
 // Функция для переключения между разделами: "Расписание" и "Статистика"
-
-const section = (val) => {
+function section(val) {
   if (val == 0) {
     document.getElementById("schedule").scrollIntoView({
       behavior: "smooth",
@@ -619,7 +572,7 @@ const entD = document.querySelector(".catbox-holder span:nth-child(6)");
 // Загрузка данных в статистику
 loadStats();
 
-const loadStats = () => {
+function loadStats() {
   aktifD.innerHTML = statsData.aktif;
   komplitD.innerHTML = statsData.komplit;
   hapusD.innerHTML = statsData.hapus;
@@ -648,14 +601,14 @@ getbtnDate.forEach((item) => {
 // Функция валидатор на проверку актуального времени
 
 // Отправка данных на почту при нажатии кнопки "Отправить на почту"
-const sendMailer = () => {
-  const serviceId = "ВАШ SERVICE ID EMAIL.JS";
-  const templateID = "ВАШ TEMPLATE ID EMAIL.JS";
+function sendMailer() {
+  const serviceId = 'ВАШ SERVICE ID EMAIL.JS';
+  const templateID = 'ВАШ TEMPLATE ID EMAIL.JS';
 
   const getTopDateYear = document.querySelector(".topdate-holder h4");
   const getTopDateMonth = document.querySelector(".topdate-holder h2");
   const buttonSend = document.querySelector(".sendMail");
-  buttonSend.addEventListener("click", () => {
+  buttonSend.addEventListener("click", function () {
     const result = [];
     const getTaskFormHead = document.querySelector(".task-form-view h1");
     const getTaskFormP = document.querySelector(".task-form-view p");
