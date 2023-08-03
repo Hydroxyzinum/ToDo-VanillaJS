@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/styles/style.css">
+	<title>Document</title>
+</head>
+
+<body>
+	<!-- Заголовочная часть -->
+	<div class="head-container">
+		<button data-target="exit" class="exit-head"></button>
+	</div>
+
+	<!-- Основной контейнер с разделами -->
+	<div class="container">
+		<!-- Навигационная панель -->
+		<div class="navbar">
+			<button class="focus" onclick="section(0)"><img class="home-btn" src="Img/chart-glyph.png" /></button>
+			<button class="focus" onclick="opentaskPopup()"><img src="Img/add.png" /></button>
+			<button class="focus" onclick="section(1)"><img class="stats-btn" src="Img/chart-glyph.png" /></button>
+		</div>
+
+		<!-- Область для отображения разделов -->
+		<div class="page-wrapper">
+			<!-- Раздел "Расписание" -->
+			<div id="schedule" class="schedule-section">
+				<!-- Область для выбора категории -->
+				<div class="category">
+					<button class="btn_unset pointer btn">unset</button>
+					<button class="btn_work pointer btn">work</button>
+					<button class="btn_education pointer btn">education</button>
+					<button class="btn_sport pointer btn">sport</button>
+					<button class="btn_social pointer btn">social</button>
+					<button class="btn_entertainment pointer btn">entertainment</button>
+				</div>
+
+				<!-- Область для отображения дат -->
+				<div class="date-holder">
+					<div class="topdate-holder">
+						<h4>2022<h2 value="">Июль</h2>
+						</h4>
+						<span>
+							<button class="arrow" onclick="changeMonth(1)"><img src="Img/arrow-left.svg" /></button>
+							<button class="arrow" onclick="changeMonth(0)"><img src="Img/arrow-right.svg" /></button>
+						</span>
+					</div>
+					<div class="date"></div>
+				</div>
+
+				<!-- Область для всплывающих окон -->
+				<div class="close-container">
+					<!-- Подтверждение удаления задачи -->
+					<div class="submit">
+						<h1 class="sure">Вы уверены?</h1>
+						<button data-target="yes" class="yes">Да</button>
+						<button data-target="no" class="no">Нет</button>
+					</div>
+				</div>
+
+				<!-- Контейнер для отображения задач -->
+				<div class="task-container-parent">
+					<div class="task-container"><span class="empty-task">У вас пока нет задач</span></div>
+					<div class="task-container-completed"><span class="completed-tag">Выполненные задачи</span></div>
+				</div>
+			</div>
+
+			<!-- Раздел "Статистика" -->
+			<div id="stats" class="stats-section">
+				<h4 class="headertop">Все</h4>
+				<h2 class="headerbottom">Статистика</h2>
+
+				<!-- Область для отображения статистики -->
+				<div class="stats-holder">
+					<!-- Блок с основной статистикой -->
+					<div class="box-holder">
+						<span>
+							<h1>35</h1>
+							<h4>Активные задачи</h4>
+						</span>
+						<span>
+							<h1>15</h1>
+							<h4>Выполненные задачи</h4>
+						</span>
+						<span>
+							<h1>55</h1>
+							<h4>Общие задачи</h4>
+						</span>
+						<span>
+							<h1>5</h1>
+							<h4>Удаленные задачи</h4>
+						</span>
+					</div>
+
+					<!-- Блок со статистикой по категориям -->
+					<div class="lower-box">
+						<h2 class="lb-head"></h2>
+						<div class="catbox-holder">
+							<span>5</span>
+							<span>10</span>
+							<span>15</span>
+							<span>5</span>
+							<span>2</span>
+							<span>18</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Всплывающее окно добавления задачи -->
+			<div class="add-task">
+				<button id="close" onclick="closetaskPopup()">&times;</button>
+				<button id="add" onclick="addtaskBtn()">Создать новую задачу</button>
+				<div class="task-form">
+					<h3 id="taskHeader">Имя задачи</h3>
+					<input type="text" id="taskname" value="" required />
+					<h3 id="taskHeader">Описание задачи</h3>
+					<input type="text" id="taskdesc" value="" />
+					<!-- Форма для выбора категории, времени начала и окончания задачи -->
+					<div class="lower-input">
+						<div class="loweri-holder">
+							<form action="#" class="form-input">
+								<button onclick="openCategory();"><b>Категории :</b> <span></span></button>
+								<button><b>Начало</b><br /><span></span><input type="time" class="event_listen" id="timestart"
+										value="12:00" name="time" /></button>
+								<button><b>Окончание</b><br /><span></span><input type="time" id="timeend" value="13:00"
+										size="30px" /></button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Всплывающее окно просмотра задачи -->
+			<div class="task-view">
+				<button id="close" onclick="closetaskView()">&times;</button>
+				<div class="task-form-view">
+					<img src="Img/Выбор.png" />
+					<h1>Имя задачи</h1>
+					<p>Описание задачи</p>
+					<!-- Контейнер для отображения информации о задаче -->
+					<div class="lower-input-view">
+						<div class="loweri-holder-view">
+							<button><b>Категория : </b><span></span></button>
+							<button><b>Начало</b><br /><span></span></button>
+							<button><b>Окончание</b><br /><span></span></button>
+							<button id="taskComplete">Выполнено</button>
+							<button id="taskDelete">Удалить</button>
+							<button class="sendMail" id="sendMail">Отправить уведомление на почту</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Подключение email.js для отправки уведомлений на почту -->
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js">
+	</script>
+	<script type="text/javascript">
+		// Инициализация email.js
+		(function () {
+			emailjs.init("RZrnxfjjOU_pryvR0");
+		})();
+	</script>
+	<!-- Подключение скрипта -->
+	<script src="./scr/script.js" type="text/javascript" charset="utf-8"></script>
+</body>
+
+</html>
