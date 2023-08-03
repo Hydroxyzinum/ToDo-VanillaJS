@@ -713,7 +713,7 @@ body {
 
 .lower-input button:nth-of-type(3),
 .lower-input-view button:nth-of-type(3) {
-	background-image: url("Img/clock-purple.png");
+	background-image: url("Img/clock-black.png");
 	background-size: 40px;
 	background-repeat: no-repeat;
 	background-position: 15% 50%;
